@@ -56,10 +56,20 @@ public class AstroGUI {
                 thisAstronaut.serviceBranch = txtServiceBranch.getText();
                 thisAstronaut.nickName = txtNickName.getText();
                 thisAstronaut.dob = Date.valueOf(txtDOB.getText());
-                thisAstronaut.save();
+                boolean saved = thisAstronaut.save();
                 txtAID.setText("");
                 txtLname.setText("");
                 txtFname.setText("");
+                txtDOB.setText("");
+                txtNickName.setText("");
+                txtRevNum.setText("");
+                txtServiceBranch.setText("");
+                if (saved) {
+                    JOptionPane.showMessageDialog(null, "The data was saved successfully!");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "The data was not saved successfully.");
+                }
             }
         });
 
