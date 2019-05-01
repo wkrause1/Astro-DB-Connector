@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.sql.Date;
 
 public class AstroGUI {
-    private Astronaut thisAstronaut;
+    private Astronaut astronaut;
     private String strAID;
 
     public Component createComponents() {
@@ -39,24 +39,24 @@ public class AstroGUI {
         butLoad.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 strAID = txtAID.getText();
-                thisAstronaut = new Astronaut(strAID);
-                txtLname.setText(thisAstronaut.lastName);
-                txtFname.setText(thisAstronaut.firstName);
-                txtNickName.setText(thisAstronaut.nickName);
-                txtServiceBranch.setText(thisAstronaut.serviceBranch);
-                txtDOB.setText(thisAstronaut.dob.toString());
-                txtRevNum.setText(thisAstronaut.revNum+"");
+                astronaut = new Astronaut(strAID);
+                txtLname.setText(astronaut.getLastName());
+                txtFname.setText(astronaut.getFirstName());
+                txtNickName.setText(astronaut.getNickName());
+                txtServiceBranch.setText(astronaut.getServiceBranch());
+                txtDOB.setText(astronaut.getDob().toString());
+                txtRevNum.setText(astronaut.getRevNum()+"");
             }
         });
 
         butSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                thisAstronaut.lastName = txtLname.getText();
-                thisAstronaut.firstName = txtFname.getText();
-                thisAstronaut.serviceBranch = txtServiceBranch.getText();
-                thisAstronaut.nickName = txtNickName.getText();
-                thisAstronaut.dob = Date.valueOf(txtDOB.getText());
-                boolean saved = thisAstronaut.save();
+                astronaut.setLastName(txtLname.getText());
+                astronaut.setFirstName(txtFname.getText());
+                astronaut.setServiceBranch(txtServiceBranch.getText());
+                astronaut.setNickName(txtNickName.getText());
+                astronaut.setDob(txtDOB.getText());
+                boolean saved = astronaut.save();
                 txtAID.setText("");
                 txtLname.setText("");
                 txtFname.setText("");
@@ -68,7 +68,7 @@ public class AstroGUI {
                     JOptionPane.showMessageDialog(null, "The data was saved successfully!");
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "The data was not saved successfully.");
+                    JOptionPane.showMessageDialog(null, astronaut.getDBstatus());
                 }
             }
         });

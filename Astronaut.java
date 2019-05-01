@@ -1,12 +1,12 @@
 import java.sql.*;
 
 public class Astronaut {
-    public String AID, firstName, lastName, nickName, serviceBranch;
-    public int revNum;
+    private String AID, firstName, lastName, nickName, serviceBranch;
+    private int revNum;
     private Connection conn;
     private int revNumAtSelect;
     private Statement stmt;
-    public Date dob;
+    private Date dob;
     private int connected;
     private String user, pass;
     private String query;
@@ -45,13 +45,68 @@ public class Astronaut {
                 revNum = rset.getInt("revnum");
                 revNumAtSelect = revNum;
                 dob = rset.getDate("dateofbirth");
-                DBstatus = "Found";
             }
             conn.close();
         } catch (SQLException e) {
             DBstatus = "Error";
             System.out.println(e);
         }
+    }
+
+    public void setFirstName(String fname) {
+        this.firstName = fname;
+    }
+
+    public void setLastName(String lname) {
+        this.lastName = lname;
+    }
+
+    public void setNickName(String nname) {
+        this.nickName = nname;
+    }
+
+    public void setServiceBranch(String serviceBranch) {
+        this.serviceBranch = serviceBranch;
+    }
+
+    public void setDob(String date) {
+        this.dob = Date.valueOf(date);
+    }
+
+    public String getAID() {
+        return this.AID;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public String getNickName() {
+        return this.nickName;
+    }
+
+    public String getServiceBranch() {
+        return this.serviceBranch;
+    }
+
+    public Date getDob() {
+        return this.dob;
+    }
+
+    public int getRevNum() {
+        return this.revNum;
+    }
+
+    public int getRevNumAtSelect() {
+        return this.revNumAtSelect;
+    }
+
+    public String getDBstatus() {
+        return this.DBstatus;
     }
 
     public boolean save() {
@@ -86,10 +141,11 @@ public class Astronaut {
                 }
                 else {
                     saved = false;
+                    DBstatus += "\nError, record has been updated since initial load. Please repeat query";
                 }
             conn.close();
         } catch (SQLException e) {
-            DBstatus = "Error";
+            DBstatus = "\nError, problem with database request.";
             System.out.println(e);
         }
         return saved;
