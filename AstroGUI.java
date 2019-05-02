@@ -3,11 +3,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.Date;
 
+/**
+ * @author Will Krause
+ * @version 2019-05-02
+ */
+
 public class AstroGUI {
     private Astronaut astronaut;
+    private AstronautFactory afactory = new AstronautFactory();
     private String strAID;
 
-    public Component createComponents() {
+    private Component createComponents() {
         final JLabel
                 labSpacer1= new JLabel(""),
                 labSpacer2= new JLabel("");
@@ -33,13 +39,12 @@ public class AstroGUI {
                 txtServiceBranch = new JTextField(15),
                 txtDOB = new JTextField(6),
                 txtRevNum = new JTextField(5);
-        //txtAID.setEditable(false);
         txtRevNum.setEditable(false);
 
         butLoad.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 strAID = txtAID.getText();
-                astronaut = new Astronaut(strAID);
+                astronaut = afactory.getAstronaut(strAID);
                 txtLname.setText(astronaut.getLastName());
                 txtFname.setText(astronaut.getFirstName());
                 txtNickName.setText(astronaut.getNickName());
@@ -55,8 +60,8 @@ public class AstroGUI {
                 astronaut.setFirstName(txtFname.getText());
                 astronaut.setServiceBranch(txtServiceBranch.getText());
                 astronaut.setNickName(txtNickName.getText());
-                astronaut.setDob(txtDOB.getText());
-                boolean saved = astronaut.save();
+                astronaut.setDob(Date.valueOf(txtDOB.getText()));
+                String saved = afactory.saveAstronaut(astronaut);
                 txtAID.setText("");
                 txtLname.setText("");
                 txtFname.setText("");
@@ -64,11 +69,11 @@ public class AstroGUI {
                 txtNickName.setText("");
                 txtRevNum.setText("");
                 txtServiceBranch.setText("");
-                if (saved) {
+                if (saved.equals("Saved!")) {
                     JOptionPane.showMessageDialog(null, "The data was saved successfully!");
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, astronaut.getDBstatus());
+                    JOptionPane.showMessageDialog(null, afactory.getDBstatus());
                 }
             }
         });
@@ -102,14 +107,10 @@ public class AstroGUI {
             UIManager.setLookAndFeel(
                     UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) { }
-
-        //Create the top-level container and add contents to it.
         JFrame frame = new JFrame("AstronautGui");
         AstroGUI app = new AstroGUI();
         Component contents = app.createComponents();
         frame.getContentPane().add(contents, BorderLayout.CENTER);
-
-        //Finish setting up the frame, and show it.
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
